@@ -1,35 +1,48 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import Episodes from "./Episodes";
-// import { episodesFixture } from "../fixtures/data";
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import Episodes from './Episodes';
 
-const episodesFixture = [
-  {
-    id: "fakeid",
-    image: {
-      medium: "image.png",
-      original: "image.png",
-    },
-    name: "episode",
-    season: "season",
-    number: "number",
-    summary: "summary",
-    runtime: "runtime",
-    embedded: {
-      episodes: "fakeinfo",
-    },
-  },
+const data = [
+	{
+		image: 'image.com',
+		name: 'chapter 1',
+		id: 1,
+		season: 1
+	},
+	{
+		image: 'image.com',
+		name: 'chapter 2',
+		id: 2,
+		season: 1
+	},
+	{
+		image: 'image.com',
+		name: 'chapter 3',
+		id: 3,
+		season: 1
+	}
 ];
-test("Episodes.js renders", () => {
-  render(<Episodes episodes={[]} />);
+
+test('Componenet Render ', () => {
+	render(<Episodes episodes={data} />);
 });
 
-test("Episodes shows data when rerendered with episodes prop", () => {
-  const { queryAllByTestId, rerender } = render(<Episodes episodes={[]} />);
+test('Renders props from app.js and updates as state changes', () => {
 
-  expect(queryAllByTestId("episode")).toHaveLength(0);
-  expect(queryAllByTestId("episode")).toStrictEqual([]);
+	const { rerender } = render(<Episodes episodes={[]} />);
 
-  rerender(<Episodes episodes={episodesFixture} />);
-  expect(queryAllByTestId("episode")).toHaveLength(0);
+
+	const imgBefore = screen.queryByRole('img');
+
+	
+	expect(imgBefore).toBeNull();
+
+
+	rerender(<Episodes episodes={data} />);
+
+	
+    const imgAfter = screen.queryAllByRole('img');
+    
+	expect(imgAfter).not.toBeNull();
+	expect(imgAfter).toBeTruthy();
 });
